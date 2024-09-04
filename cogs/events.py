@@ -9,10 +9,10 @@ class Events(commands.Cog):
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
-
+        
         # 如果訊息是命令則不處理
         if message.content.startswith('!'):
-            await self.bot.process_commands(message)
+            #await self.bot.process_commands(message)
             return
 
         if message.content == 'hi':
