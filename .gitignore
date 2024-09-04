@@ -14884,3 +14884,5 @@ env/ssl/certs/.keep
 env/ssl/misc/CA.pl
 env/ssl/misc/tsget
 env/ssl/misc/tsget.pl
+modules/__pycache__/__init__.cpython-312.pyc
+modules/__pycache__/view.cpython-312.pyc
