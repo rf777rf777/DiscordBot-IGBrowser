@@ -22,9 +22,11 @@ class Commands(commands.Cog):
             description=f"價格: {item['price']}\n尺寸: {item['size']}\n狀態: {item['status']}",
             color=0x00ff00
         )
+        
+        embed.set_footer(text=f"商品 {index + 1} / {len(self.items)}")
+       
         if item.get("image"):
             embed.set_image(url=item["image"])
-        embed.set_footer(text=f"商品 {index + 1} / {len(self.items)}")
         
         if item.get("video"):
             embed.video(url=item['video'])
