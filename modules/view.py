@@ -10,14 +10,14 @@ class PaginationView(discord.ui.View):
         self.previous.disabled = self.index == 0
         self.next.disabled = self.index == self.total_items - 1
         
-    @discord.ui.button(label="上一個", style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label="Previous", style=discord.ButtonStyle.blurple)
     async def previous(self, interaction: discord.Interaction, button: discord.ui.Button):
         if self.index > 0:
             self.index -= 1
         await self.update_buttons()
         await self.update_embed(interaction)
 
-    @discord.ui.button(label="下一個", style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label="Next", style=discord.ButtonStyle.blurple)
     async def next(self, interaction: discord.Interaction, button: discord.ui.Button):
         if self.index < self.total_items - 1:
             self.index += 1
