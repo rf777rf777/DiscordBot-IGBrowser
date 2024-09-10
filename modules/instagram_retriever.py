@@ -26,28 +26,24 @@ class InstagramItem():
         # 找到對應的貼文
         latest_post = latest_posts[dates.index(latest_date)] 
                
-        images = []
-        videos = []  
+        content_urls = {}
         if latest_post.typename == 'GraphSidecar':
             for node in latest_post.get_sidecar_nodes():
                 if node.is_video:
-                    videos.append(node.video_url)
+                    content_urls[node.video_url] = 'video'
                 else:
-                    images.append(node.display_url)
+                    content_urls[node.display_url] = 'image'
         else:
             # 單張圖片或單部影片
             if latest_post.is_video:
-                videos.append(latest_post.video_url)
+                content_urls[latest_post.url] = 'video'
+                #content_urls[latest_post.video_url] = 'video'
             else:
-                images.append(latest_post.url)
-                
+                content_urls[latest_post.url] = 'image'                
         return {
             'caption': latest_post.caption,
             'hashtages': latest_post.caption_hashtags,
             'code': latest_post.shortcode,
-            'content': {
-                'images': images,
-                'videos': videos
-            }         
+            'content': content_urls         
         }
 
