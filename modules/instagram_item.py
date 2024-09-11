@@ -9,13 +9,15 @@ class PostItem():
 class InstagramItem():
     def __init__(self, username):
         ig_loader = instaloader.Instaloader()
+        ig_loader.login('XXX', 'XXX')
         self.profile = instaloader.Profile.from_username(ig_loader.context, username)
     
     def get_user_profile(self):
         return {
             'username': self.profile.username,
             'fullname': self.profile.full_name,
-            'biography': self.profile.biography
+            'biography': self.profile.biography,
+            'thumbnail': self.profile.profile_pic_url
         }
     
     def get_latest_posts(self, ignore_pinned=True):

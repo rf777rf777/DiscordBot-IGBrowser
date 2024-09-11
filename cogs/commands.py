@@ -9,10 +9,12 @@ class Commands(commands.Cog):
         #self.ig_item = InstagramItem('yuzuki_yzk030')
         #self.ig_item = InstagramItem('momiko_124')
         #self.ig_item = InstagramItem('eeelyeee')
-        self.ig_item = InstagramItem('walkerpretty96')
+        #self.ig_item = InstagramItem('walkerpretty96')
+        #self.ig_item = InstagramItem('mei.x.mei')
 
         #self.profile = ig_item.get_user_profile()
         self.latest_post = None
+        self.profile = None
 
     @commands.command()
     async def hello(self, ctx):
@@ -27,14 +29,25 @@ class Commands(commands.Cog):
         hashtags = self.latest_post['hashtages']
         
         embed = discord.Embed(
-            title=caption,
-            description=hashtags if len(hashtags) > 0 else '',
+            title=self.profile['username'],
+            description=self.profile['fullname'],
             color=0x00ff00
         )
-        embed.url = f'https://www.instagram.com/p/{self.latest_post['code']}'
-        #embed.set_footer(text=f'https://www.instagram.com/p/{self.latest_post['code']}')
+        embed.set_thumbnail(url=self.profile['thumbnail'])
+        embed.url = f'https://www.instagram.com/{self.profile['username']}/'
+        embed.set_footer(text=hashtags if len(hashtags) > 0 else '')
         post_items = self.latest_post['post_items']
         item = post_items[index]
+        embed.add_field(
+            name="貼文連結：",
+            value=f"[點擊這裡觀看](https://www.instagram.com/p/{self.latest_post['code']})",
+            inline=False
+        ) 
+        embed.add_field(
+            name="說明文字：",
+            value=caption,
+            inline=False
+        ) 
         if item.type == 'image':
             embed.set_image(url=item.url)
         else:
@@ -48,8 +61,10 @@ class Commands(commands.Cog):
         return embed
 
     @commands.command()
-    async def show_items(self, ctx):
-        self.latest_post = self.ig_item.get_latest_posts()
+    async def show_items(self, ctx, username: str):
+        ig_item = InstagramItem(username)
+        self.latest_post = ig_item.get_latest_posts()
+        self.profile = ig_item.get_user_profile()
         view = PaginationView(total_items=len(self.latest_post['post_items']), update_embed_callback=self.generate_embed)
         embed = self.generate_embed(0)
         await ctx.send(embed=embed, view=view)
