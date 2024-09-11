@@ -6,9 +6,13 @@ class PaginationView(discord.ui.View):
         self.index = index
         self.total_items = total_items
         self.update_embed_callback = update_embed_callback
-        # 根據當前 index 設定按鈕狀態
-        self.previous.disabled = self.index == 0
-        self.next.disabled = self.index == self.total_items - 1
+        
+        if total_items <= 1:
+            self.clear_items()
+        else:
+            # 根據當前 index 設定按鈕狀態
+            self.previous.disabled = self.index == 0
+            self.next.disabled = self.index == self.total_items - 1
         
     @discord.ui.button(label="Previous", style=discord.ButtonStyle.blurple)
     async def previous(self, interaction: discord.Interaction, button: discord.ui.Button):
