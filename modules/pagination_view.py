@@ -1,9 +1,11 @@
 import discord
 
 class PaginationView(discord.ui.View):
-    def __init__(self, total_items, update_embed_callback, index=0):
+    def __init__(self, total_items, update_embed_callback, profile, latest_post, index=0):
         super().__init__()
         self.index = index
+        self.profile = profile
+        self.latest_post = latest_post
         self.total_items = total_items
         self.update_embed_callback = update_embed_callback
         
@@ -34,5 +36,5 @@ class PaginationView(discord.ui.View):
         self.next.disabled = self.index == self.total_items - 1
 
     async def update_embed(self, interaction: discord.Interaction):
-        embed = self.update_embed_callback(self.index)  # 使用回調函數更新 embed
+        embed = self.update_embed_callback(self.index, self.profile, self.latest_post)  # 使用回調函數更新 embed
         await interaction.response.edit_message(embed=embed, view=self)

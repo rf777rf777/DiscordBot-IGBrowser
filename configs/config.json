@@ -1,4 +1,10 @@
 {
-    "TOKEN": "", 
-    "PREFIX": "!"
+    "DISCORD": {
+        "TOKEN": "", 
+        "PREFIX": "!"
+    },
+    "IG": {
+        "USERNAME": "",
+        "PASSWORD": ""
+    }
 }
