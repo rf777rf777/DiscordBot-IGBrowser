@@ -40,7 +40,9 @@ class Commands(commands.Cog):
         embed.set_thumbnail(url=profile['thumbnail'])
         embed.url = f'https://www.instagram.com/{profile['username']}/'
 
+        items_count = len(latest_post.post_items)
         item = latest_post.post_items[index]
+        
         embed.add_field(
             name="貼文連結：",
             value=f"[點擊這裡觀看](https://www.instagram.com/p/{latest_post.code})",
@@ -54,14 +56,14 @@ class Commands(commands.Cog):
         if item.type == 'image':
             embed.set_image(url=item.url).set_image(url=item.url)
             embed.add_field(
-                name="圖片：",
+                name=f"貼文({index + 1}/{items_count}) - 圖片：",
                 value='',
                 inline=False
             )
         else:
             embed.set_image(url=item.url)
             embed.add_field(
-                name="影片：",
+                name=f"貼文({index + 1}/{items_count}) - 影片：",
                 value=f"[點擊這裡觀看]({item.video_url})",
                 inline=False
             )  
@@ -73,13 +75,13 @@ class Commands(commands.Cog):
         return embed
 
     @commands.command()
-    async def show_items(self, ctx, username: str):
+    async def ig(self, ctx, username: str):
         ig_item = InstagramItem(username)
         profile = ig_item.get_user_profile()
         latest_post = ig_item.get_latest_post()
         view = PaginationView(total_items=len(latest_post.post_items), update_embed_callback=self.generate_embed, profile=profile, latest_post=latest_post)
         embed = self.generate_embed(0, profile, latest_post)
-        caption = latest_post.caption
+        caption = latest_post.caption or ''      
         caption = re.sub(r'#\w+', '', caption).strip()
         if len(caption) > 100:
             caption = f'{caption[:100]} ... [<詳見貼文>](https://www.instagram.com/p/{latest_post.code})'
